@@ -1,13 +1,28 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
+import os
+import subprocess
+import sys
+
+# --- FORCE INSTALL PLOTLY ---
+# This ensures Plotly is installed even if requirements.txt fails
+try:
+    import plotly.express as px
+    import plotly.graph_objects as go
+except ImportError:
+    # Use subprocess to pip install strictly within the running environment
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "plotly"])
+    import plotly.express as px
+    import plotly.graph_objects as go
+# ---------------------------
+
 from datetime import datetime, timedelta
 
-# --- CONFIGURATION & PAGE SETUP  ---
+# --- CONFIGURATION & PAGE SETUP ---
 st.set_page_config(
     page_title="Ad Spend Anomaly Detector",
+# ... (rest of the code remains the same)
     page_icon="🚨",
     layout="wide"
 )
