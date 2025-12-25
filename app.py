@@ -31,18 +31,16 @@ st.set_page_config(
 st.markdown("""
 <style>
     .metric-card {
-        background-color: #f0f2f6;
+        background-color: #f0f2f6; /* Keep the light gray background */
+        color: #31333F; /* Change text color to dark grey for readability */
         padding: 20px;
         border-radius: 10px;
         border-left: 5px solid #ff4b4b;
     }
-    .status-ok {
-        color: green;
-        font-weight: bold;
-    }
-    .status-critical {
-        color: red;
-        font-weight: bold;
+    /* Ensure the headers inside the card are also dark */
+    .metric-card h4 {
+        color: #31333F;
+        margin-top: 0;
     }
 </style>
 """, unsafe_allow_html=True)
