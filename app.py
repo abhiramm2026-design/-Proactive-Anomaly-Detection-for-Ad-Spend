@@ -25,9 +25,10 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CSS STYLING (Fixed for Visibility) ---
+# --- CSS STYLING (UPDATED COLORS) ---
 st.markdown("""
 <style>
+    /* Metric Card Styling */
     .metric-card {
         background-color: #f0f2f6;
         color: #31333F; 
@@ -40,21 +41,27 @@ st.markdown("""
         color: #31333F;
         margin-top: 0;
     }
+    
+    /* Tab Container */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 24px;
+        gap: 10px; /* Gap between tabs */
     }
+
+    /* Unselected Tab Styling */
     .stTabs [data-baseweb="tab"] {
         height: 50px;
         white-space: pre-wrap;
-        background-color: #f0f2f6;
-        border-radius: 4px 4px 0px 0px;
-        gap: 1px;
+        background-color: #e0e0e0; /* <-- CHANGE THIS HEX for Unselected Tab Color */
+        color: #31333F;            /* Text Color */
+        border-radius: 10px 10px 0px 0px;
         padding-top: 10px;
         padding-bottom: 10px;
     }
+
+    /* Selected Tab Styling */
     .stTabs [aria-selected="true"] {
-        background-color: #ff4b4b;
-        color: white;
+        background-color: #2E86C1; /* <-- CHANGE THIS HEX for Selected Tab Color (Currently Blue) */
+        color: white;              /* Text Color */
     }
 </style>
 """, unsafe_allow_html=True)
@@ -105,7 +112,6 @@ def run_logic_checks(metrics):
     # --- TIER 1: KILL SWITCH ---
     
     # Rule A: Zero Conversions
-    # IF Spend > ₹5,000 (scaled) AND Conversions == 0 (last 4 hours)
     if metrics['spend_last_4h'] > 5000 and metrics['conv_last_4h'] == 0:
         alerts.append({
             "Tier": "Tier 1: Kill Switch",
@@ -116,7 +122,6 @@ def run_logic_checks(metrics):
         })
 
     # Rule B: Pacing Breach
-    # IF Daily Spend > (Daily_Budget * 1.2)
     limit = metrics['daily_budget'] * 1.2
     if metrics['daily_spend'] > limit:
         alerts.append({
@@ -130,7 +135,6 @@ def run_logic_checks(metrics):
     # --- TIER 2: TREND WATCH ---
     
     # Rule C: Cost Spike (CPM)
-    # IF CPM > (Average * 1.5)
     if metrics['current_cpm'] > (metrics['avg_cpm'] * 1.5):
         alerts.append({
             "Tier": "Tier 2: Trend Watch",
@@ -141,7 +145,6 @@ def run_logic_checks(metrics):
         })
 
     # Rule D: Quality Drop (CTR)
-    # IF CTR < (Average * 0.5)
     if metrics['current_ctr'] < (metrics['avg_ctr'] * 0.5):
         alerts.append({
             "Tier": "Tier 2: Trend Watch",
@@ -161,7 +164,7 @@ st.title("🛡️ Proactive Ad Anomaly Detector")
 tab1, tab2 = st.tabs(["📊 Simulation Dashboard", "🛠️ Manual Test Lab"])
 
 # ==========================================
-# TAB 1: SIMULATION DASHBOARD (Existing)
+# TAB 1: SIMULATION DASHBOARD
 # ==========================================
 with tab1:
     col_ctrl, col_main = st.columns([1, 3])
@@ -239,7 +242,7 @@ with tab1:
             st.plotly_chart(fig, use_container_width=True)
 
 # ==========================================
-# TAB 2: MANUAL TEST LAB (New)
+# TAB 2: MANUAL TEST LAB
 # ==========================================
 with tab2:
     st.markdown("### 🧪 Test Your Own Data")
